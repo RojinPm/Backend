@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-app.post("/create", (req, res) => {
+app.post("/news", (req, res) => {
     // res.json(req.body);
     fs.writeFile(`${req.body.id}.txt`, req.body.htmlData, (err) => {
         if (err) {
@@ -27,9 +27,18 @@ app.post("/create", (req, res) => {
 
     console.log(req.body.id);
 });
-
+app.get("/get",(req,res) => {
+    console.log(req.query.id);
+    fs.readFile(`${req.query.id}.txt`,'utf-8', function(err,data) {
+        if(!err) {
+            res.json({"content": data})
+        } else (
+            res.json({"content":"invalid"})
+        )
+    })
+})
 app.get("/", (req, res) => {
     res.send("Server is running properly");
 });
 
-app.listen(8000, console.log("Server is running on the port"));
+app.listen(5000, console.log("Server is running on the port"));
